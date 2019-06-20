@@ -1,8 +1,6 @@
-# MikroApp
+# Frontend
 
-[![Build Status](https://ci.microkube.com/api/badges/rubykube/mikroapp/status.svg)](https://ci.microkube.com/rubykube/mikroapp)
-
-Rubykube wallet frontend for peatio and barong
+Wallet frontend for backend and authentication
 
 ## Available Scripts
 
