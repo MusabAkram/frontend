@@ -17,32 +17,80 @@ class WithDraw extends Component {
     super(props);
     this.state={
       ShowTab: 1,
+      name:'',
+      type:'coin',
+      id:''
     }}
-  componentDidMount() { }
+  componentDidMount() {
+    const {CionDetails}=this.props
+  const   {base_factor,
+    deposit_fee,
+    id,
+    min_deposit_amount,
+    min_withdraw_amount,
+    name,
+    precision,
+    symbol,
+    type,
+    withdraw_fee,
+    withdraw_limit_24h,
+    withdraw_limit_72h,
+   } = CionDetails
+this.setState({
+  name:name,id:id,type:type
+})
+if(type === 'coin'){
+  this.setState({ShowTab:1});
+}else{
+  this.setState({ShowTab:2});
+}
 
+   }
+   componentWillReceiveProps(newProps) {
+    const {CionDetails}=this.props
+  const   {base_factor,
+    deposit_fee,
+    id,
+    min_deposit_amount,
+    min_withdraw_amount,
+    name,
+    precision,
+    symbol,
+    type,
+    withdraw_fee,
+    withdraw_limit_24h,
+    withdraw_limit_72h,
+   } = CionDetails
+this.setState({
+  name:name,id:id,type:type
+})
+if(type === 'coin'){
+  this.setState({ShowTab:1});
+}else{
+  this.setState({ShowTab:2});
+}
+
+   }
   //FIXME: query the correct history
   // filterWithDraw = list => list.filter(item => item.currency === this.props.activeWallet);
   handleTabe=(tab)=>{
     this.setState({ShowTab:tab});
   }
   render() {
-    const {ShowTab} = this.state
+    const {ShowTab,name,id} = this.state
+
     return (
       <div className="tab-pane  fade show active" id="v-pills-zilliqua-btc-withdrawl" role="tabpanel"
         aria-labelledby="v-pills-zilliqua-btc-withdrawl-tab">
-            <ul className="nav nav-tabs mt-2 mb-2">
-                      <li role="presentation"><a href="#closed-orders"onClick={()=>this.handleTabe(1)}  className={`${ShowTab == 1 ? ' active': ''}`} data-toggle="tab">WithDraw Bank</a></li>
-                      <li role="presentation"><a href="#active-orders"onClick={()=>this.handleTabe(2)} className={`${ShowTab == 2 ? ' active': ''}`} data-toggle="tab">Send Coins</a></li>
-                    </ul>
                     {ShowTab == 1&&<div>
                       
-        <h4 className="crypt-down">Withdraw ZAR</h4>
+        <h4 className="crypt-down">Withdraw {id.toUpperCase()}</h4>
         <p><i className="pe-7s-info"></i> Standard bank transfer will be made up to 2 workdays</p>
         <form>
           <div className="input-group mb-3">
             <input type="text" placeholder="Amount" className="form-control" name="amount" />
             <div className="input-group-append">
-              <span className="input-group-text crypt-up">Zar</span>
+              <span className="input-group-text crypt-up">{id.toUpperCase()}</span>
             </div>
           </div>
           <div className="input-group mb-3">
@@ -95,7 +143,7 @@ class WithDraw extends Component {
         </div>}
         {ShowTab == 2&&<div>
                       
-                      <h4 className="crypt-down">Send coin</h4>
+                      <h4 className="crypt-down">Send {name}</h4>
                       <p><i className="pe-7s-info"></i> Standard bank transfer will be workdays</p>
                       <form>
                         <div className="input-group mb-3">

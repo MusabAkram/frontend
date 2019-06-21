@@ -53,10 +53,10 @@ componentDidMount(){
   this.props.fetchWalletData()
 }
 componentWillReceiveProps(newProps){
-    console.log(newProps.wallets,CoinList,'waleeeeeeeeeeeee')
     if(newProps.wallets){
       this.setState({walletList:newProps.wallets})
     }
+
 }
   //FIXME: query the correct history
   // filterHistory = list => list.filter(item => item.currency === this.props.activeWallet);
@@ -155,9 +155,9 @@ componentWillReceiveProps(newProps){
                     </div>
                     <div className="col-md-9">
                       <div className="tab-content" id="v-pills-zilliqua-btc-tabContent">
-                      {ShowTab == 0 &&  <DepositeWithQr />}
+                      {ShowTab == 0 &&  <DepositeWithQr CionDetails={CionDetails} />}
                       {/* {ShowTab == 0 &&  <Deposite />} */}
-                        {ShowTab == 1 &&  <WithDraw/>}
+                        {ShowTab == 1 &&  <WithDraw CionDetails={CionDetails}/>}
                         {ShowTab == 2 &&    <History/>}
                         {ShowTab == 3 &&    <BuySell/>}
                       </div>

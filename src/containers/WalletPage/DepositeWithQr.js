@@ -24,7 +24,7 @@ class DepositeWithQr extends Component {
     return (
       <div className="tab-pane fade show active" id="v-pills-zilliqua-btc-deposit" role="tabpanel"
         aria-labelledby="v-pills-zilliqua-btc-deposit-tab">
-        <h6 className="text-uppercase  crypt-down"> Deposite {coinName}coin</h6>
+        <h6 className="text-uppercase  crypt-down"> Deposit {coinName}coin</h6>
         {/* <p>Details - <a href="#/do-something" className="crypt-up">Get VIP Now</a></p> */}
         <p>Please paste the address below in your wallet</p>
 
