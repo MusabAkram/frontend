@@ -16,6 +16,10 @@ const getCurrencies = () => {
     .then(response => response.data);
 };
 
+const getMarkets = () => {
+  return axiosInstance.get('/api/v2/peatio/public/markets')
+    .then(response => response.data);
+};
 export const getWalletData = async () => {
-  return await Promise.all([getBalances(), getCurrencies()]);
+  return await Promise.all([getBalances(), getCurrencies(),getMarkets()]);
 };
