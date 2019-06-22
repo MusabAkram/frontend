@@ -23,6 +23,7 @@ import WithDraw from './WidthDraw';
 import BuySell from './Buy_Sell';
 import CoinList from './List';
 import History from './History';
+import DepositeWithQr from './DepositeWithQr';
 class WalletPage extends Component {
   constructor(props){
     super(props);
@@ -52,10 +53,10 @@ componentDidMount(){
   this.props.fetchWalletData()
 }
 componentWillReceiveProps(newProps){
-    console.log(newProps.wallets,CoinList,'waleeeeeeeeeeeee')
     if(newProps.wallets){
       this.setState({walletList:newProps.wallets})
     }
+
 }
   //FIXME: query the correct history
   // filterHistory = list => list.filter(item => item.currency === this.props.activeWallet);
@@ -139,11 +140,11 @@ componentWillReceiveProps(newProps){
                           <i className="pe-7s-up-arrow"></i> Withdraw
                         </a>
 
-                        <a className={`nav-link ${ShowTab == 2 ? ' active': ''}`} onClick={()=>this.handleTabe(2)}  id="v-pills-zilliqua-btc-history-tab" data-toggle="pill"
+                        {/* <a className={`nav-link ${ShowTab == 2 ? ' active': ''}`} onClick={()=>this.handleTabe(2)}  id="v-pills-zilliqua-btc-history-tab" data-toggle="pill"
                           // href="#v-pills-zilliqua-btc-history" role="tab" aria-controls="v-pills-zilliqua-btc-history"
                           aria-selected="false">
                           <i className="pe-7s-clock"></i> History
-                        </a>
+                        </a> */}
 
                         <a className={`nav-link ${ShowTab == 3 ? ' active': ''}`} onClick={()=>this.handleTabe(3)}  id="v-pills-zilliqua-btc-buysell-tab" data-toggle="pill"
                           // href="#v-pills-zilliqua-btc-buysell" role="tab" aria-controls="v-pills-zilliqua-btc-buysell"
@@ -154,8 +155,9 @@ componentWillReceiveProps(newProps){
                     </div>
                     <div className="col-md-9">
                       <div className="tab-content" id="v-pills-zilliqua-btc-tabContent">
-                        {ShowTab == 0 &&  <Deposite />}
-                        {ShowTab == 1 &&  <WithDraw/>}
+                      {ShowTab == 0 &&  <DepositeWithQr CionDetails={CionDetails} />}
+                      {/* {ShowTab == 0 &&  <Deposite />} */}
+                        {ShowTab == 1 &&  <WithDraw CionDetails={CionDetails}/>}
                         {ShowTab == 2 &&    <History/>}
                         {ShowTab == 3 &&    <BuySell/>}
                       </div>
