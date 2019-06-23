@@ -20,7 +20,7 @@ class DepositeWithQr extends Component {
   // filterHistory = list => list.filter(item => item.currency === this.props.activeWallet);
 
   render() {
-      const {coinName = '',Code = "adfdwxxsdrcje24 kee"} =this.props
+      const {coinName = '',Code = ""} =this.props
     return (
       <div className="tab-pane fade show active" id="v-pills-zilliqua-btc-deposit" role="tabpanel"
         aria-labelledby="v-pills-zilliqua-btc-deposit-tab">
