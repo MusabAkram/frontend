@@ -31,7 +31,7 @@ class WalletPage extends Component {
       CionDetails: {id: "",
       locked: 0,
       name: "",
-      withdraw_fee: ''},
+      withdraw_fee: '',address:""},
       ShowTab:0,
       walletList:{},
       images:
@@ -57,6 +57,14 @@ componentWillReceiveProps(newProps){
       this.setState({walletList:newProps.wallets})
     }
 
+}
+callWidtDraw =(typeCall,data)=>{
+
+  this.props.fetchSubmitWithdraw(data)
+}
+selectedCoin=(data)=>{
+  this.setState({CionDetails:data})
+  this.props.setActiveWallet(data.id)
 }
   //FIXME: query the correct history
   // filterHistory = list => list.filter(item => item.currency === this.props.activeWallet);
@@ -94,7 +102,7 @@ componentWillReceiveProps(newProps){
                 </form>
                 <ul className="crypt-big-list crypt-coin-select">
                   {Object.values(walletList).map((data)=>(
-                    <li onClick={()=>this.setState({CionDetails:data})}>
+                    <li onClick={()=>this.selectedCoin(data)}>
                       <a 
                       // href={data.name}
                       >
@@ -155,9 +163,9 @@ componentWillReceiveProps(newProps){
                     </div>
                     <div className="col-md-9">
                       <div className="tab-content" id="v-pills-zilliqua-btc-tabContent">
-                      {ShowTab == 0 &&  <DepositeWithQr CionDetails={CionDetails} />}
+                      {ShowTab == 0 &&  <DepositeWithQr name={CionDetails.name} Code={CionDetails.address} />}
                       {/* {ShowTab == 0 &&  <Deposite />} */}
-                        {ShowTab == 1 &&  <WithDraw CionDetails={CionDetails}/>}
+                        {ShowTab == 1 &&  <WithDraw  WithDrawNow={this.callWidtDraw} CionDetails={CionDetails}/>}
                         {ShowTab == 2 &&    <History/>}
                         {ShowTab == 3 &&    <BuySell/>}
                       </div>
@@ -193,7 +201,7 @@ function mapDispatchToProps(dispatch) {
     setActiveWallet: id => dispatch(setActiveWallet(id)),
     fetchWalletAddress: id => dispatch(fetchWalletAddress(id)),
     fetchHistory: () => dispatch(fetchHistory()),
-    fetchSubmitWithdraw: () => dispatch(fetchSubmitWithdraw()),
+    fetchSubmitWithdraw: (data) => dispatch(fetchSubmitWithdraw(data)),
     handleChangeWithdraw: (field, value) => dispatch(handleChangeWithdraw(field, value))
   };
 }
