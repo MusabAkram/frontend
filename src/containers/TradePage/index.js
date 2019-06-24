@@ -55,18 +55,18 @@ class TradePage extends Component {
       currentMarket:'',
       marketTradeData:null
     }
-    const response = await fetch("http://www.achievers.tradex.markets/api/v2/peatio/public/currencies");
+    const response = await fetch(host + "/api/v2/peatio/public/currencies");
     const data = await response.json();
     stateData.currencies = data;
     this.setState({currencies:data});
 
-    const marketResponse = await fetch("http://www.achievers.tradex.markets/api/v2/peatio/public/markets");
+    const marketResponse = await fetch(host + "/api/v2/peatio/public/markets");
     const marketData = await marketResponse.json();
     stateData.marketData = marketData;
     // stateData.currentMarket = marketData[0].id;
     this.setState({marketData:marketData,currentMarket:marketData[0].id});
     
-    const tickerResponse = await fetch("http://www.achievers.tradex.markets/api/v2/peatio/public/markets/tickers");
+    const tickerResponse = await fetch(host + "/api/v2/peatio/public/markets/tickers");
     const tickerDataTemp = await tickerResponse.json();
     let tickerData = [];
 
@@ -91,15 +91,18 @@ class TradePage extends Component {
     this.setState({tickerData:tickerData});
     // stateData.tickerData = tickerData;
 
-    const orderBookResponse = await fetch("http://www.achievers.tradex.markets/api/v2/peatio/public/markets/"+ this.state.currentMarket + "/order-book");
+    const orderBookResponse = await fetch(host+"/api/v2/peatio/public/markets/"+ this.state.currentMarket + "/order-book");
     const orderBookData = await orderBookResponse.json();
     // stateData.orderBookData = orderBookData;
     this.setState({orderBookData:orderBookData})
 
-    const marketTradeResponse = await fetch("http://www.achievers.tradex.markets/api/v2/peatio/public/markets/"+ this.state.currentMarket +"/trades");
+    const marketTradeResponse = await fetch(host+"/api/v2/peatio/public/markets/"+ this.state.currentMarket +"/trades");
     const marketTradeData = await marketTradeResponse.data;
     // stateData.marketTradeData = marketTradeData;
     this.setState({marketData:marketData});
+
+    // const marketTradeResponse = await fetch();
+    // const marketTradeData = await marketTradeResponse.data;
 
     
     console.log(this.state);
