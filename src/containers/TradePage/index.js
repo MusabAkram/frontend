@@ -232,7 +232,7 @@ class TradePage extends Component {
               {/* <!-- TradingView Widget END --> */}
               <div id="depthchart" className="depthchart h-40 crypt-dark-segment">
                 <TradingViewWidget
-                  symbol="NASDAQ:AAPL"
+                  symbol="BTCUSD"
                   theme={Themes.LIGHT}
                   locale="fr"
                   autosize
