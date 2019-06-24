@@ -5,17 +5,17 @@ import * as types from '../constants/actions';
 import { postNewWithdraws } from '../api/withdraw';
 
 
-function* fetchSubmitWithdraw() {
+function* fetchSubmitWithdraw({payload}) {
   try {
-    const params = yield select(state => {
-      return {
-        rid: state.withdraw.rid,
-        amount: state.withdraw.amount,
-        otp: state.withdraw.otp,
-        currency: state.wallet.activeWallet
-      };
-    });
-    yield call(postNewWithdraws, params);
+    // const params = yield select(state => {
+    //   return {
+    //     rid: state.withdraw.rid,
+    //     amount: state.withdraw.amount,
+    //     otp: state.withdraw.otp,
+    //     currency: state.wallet.activeWallet
+    //   };
+    // });
+    yield call(postNewWithdraws, payload);
 
 
     yield put(actions.successSubmitWithdraw());

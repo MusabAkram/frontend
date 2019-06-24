@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import WalletPage from './WalletPage';
 import TradePage from './TradePage';
 import LoginPage from './LoginPage';
+import RegistryPage from './RegisterPage';
 import actions from '../actions';
 import PrivateRoute from '../components/PrivateRoute';
 
@@ -23,8 +24,9 @@ class App extends Component {
       <Switch>
         <Redirect exact from='/' to='/wallets' />
         <Route exact path="/login" component={LoginPage} />
-        <PrivateRoute path="/wallets" component={WalletPage} isAuthenticated={true} isLoading={isFetching} />
-        <PrivateRoute path="/trade" component={TradePage} isAuthenticated={true} isLoading={isFetching} />
+        <Route  path="/signup" component={RegistryPage} />
+        <PrivateRoute path="/wallets" component={WalletPage} isAuthenticated={isAuthenticated} isLoading={isFetching} />
+        <PrivateRoute path="/trade" component={TradePage} isAuthenticated={isAuthenticated} isLoading={isFetching} />
       </Switch>
     );
   }
