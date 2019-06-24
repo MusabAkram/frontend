@@ -4,7 +4,7 @@ import { fetchWalletSaga, setActiveWalletSaga, fetchWalletAddressSaga } from './
 import { fetchHistorySaga } from './history';
 import { fetchSubmitWithdrawSaga } from './withdraw';
 import { fetchLogoutSaga, fetchLoginSaga,fetchSignUpSaga } from './auth';
-
+import { fetchMarketSaga } from './market'
 
 export default function* rootSaga() {
   yield all([
@@ -16,6 +16,7 @@ export default function* rootSaga() {
     fetchSubmitWithdrawSaga(),
     fetchLogoutSaga(),
     fetchLoginSaga(),
-    fetchSignUpSaga()
+    fetchSignUpSaga(),
+    fetchMarketSaga()
   ]);
 }

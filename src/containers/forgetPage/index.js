@@ -4,13 +4,14 @@ import compose from 'recompose/compose';
 import LoginForm from '../../components/LoginForm';
 import actions from '../../actions';
 import NavBar from '../../components/NavBar';
+import ForgetForm from '../../components/ForgetForm';
 
 class LoginPage extends Component {
   state = { email: '', password: '' };
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.actions.fetchLogin(this.state.email, this.state.password);
+    this.props.actions.fetchLogin(this.state.email);
   };
 
   handleChangeField = (field, value) => this.setState({ [field]: value });
@@ -29,7 +30,7 @@ class LoginPage extends Component {
             <div className="col-md-6">
               <div className="cryptorio-forms text-center pt-5 pb-5">
                 <div className="cryptorio-main-form">
-                  <LoginForm
+                  <ForgetForm
                     email={email}
                     password={password}
                     onChange={this.handleChangeField}
@@ -37,8 +38,7 @@ class LoginPage extends Component {
                     error={error}
                   />
 
-                  <p className="float-left"><a href="/signup">Sign Up</a></p>
-                  <p className="float-right"><a href="/forgot">Forgot Password</a></p>
+                  <p className="float-left"><a href="/login">Login</a></p>
                 </div>
               </div>
             </div>

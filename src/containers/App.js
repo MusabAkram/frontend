@@ -6,6 +6,7 @@ import TradePage from './TradePage';
 import LoginPage from './LoginPage';
 import RegistryPage from './RegisterPage';
 import actions from '../actions';
+import ForgetPage from './forgetPage';
 import PrivateRoute from '../components/PrivateRoute';
 
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
         <Redirect exact from='/' to='/wallets' />
         <Route exact path="/login" component={LoginPage} />
         <Route  path="/signup" component={RegistryPage} />
+        <Route  path="/forgot" component={ForgetPage} />
         <PrivateRoute path="/wallets" component={WalletPage} isAuthenticated={isAuthenticated} isLoading={isFetching} />
         <PrivateRoute path="/trade" component={TradePage} isAuthenticated={isAuthenticated} isLoading={isFetching} />
       </Switch>

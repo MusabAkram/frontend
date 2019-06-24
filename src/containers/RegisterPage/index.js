@@ -44,8 +44,8 @@ class RegistryPage extends Component {
                     error={newError}
                   />
 
-                  <p className="float-left"><a href="register">Sign In</a></p>
-                  <p className="float-right"><a href="forgot.html">Forgot Password</a></p>
+                  <p className="float-left"><a href="/login">Sign In</a></p>
+                  <p className="float-right"><a href="/forgot">Forgot Password</a></p>
                 </div>
               </div>
             </div>
