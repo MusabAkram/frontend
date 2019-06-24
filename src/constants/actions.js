@@ -25,7 +25,3 @@ export const FETCH_LOGOUT = 'auth/FETCH_LOGOUT';
 export const FAIL_LOGOUT = 'auth/FAIL_LOGOUT';
 export const FETCH_LOGIN = 'auth/FETCH_LOGIN';
 export const FAIL_LOGIN = 'auth/FAIL_LOGIN';
-
-
-export const FETCH_SIGNUP = 'FETCH_SIGNUP'
-export const Fail_SIGNUP = 'Fail_SIGNUP'
