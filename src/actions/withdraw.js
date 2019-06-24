@@ -6,8 +6,8 @@ import {
   CLEAR_WITHDRAW_FORM,
 } from '../constants/actions';
 
-export const fetchSubmitWithdraw = (data) => {
-  return { type: FETCH_SUBMIT_WITHDRAW,payload: data };
+export const fetchSubmitWithdraw = () => {
+  return { type: FETCH_SUBMIT_WITHDRAW };
 };
 
 export const successSubmitWithdraw = () => {
