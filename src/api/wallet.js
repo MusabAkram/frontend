@@ -2,7 +2,7 @@ import axiosInstance from './requestBuilder';
 
 
 export const getWalletAddress = id => {
-  return axiosInstance.get(`/api/v2/peatio/account/deposit_address/${id}`)
+  return axiosInstance.post(`/api/v2/peatio/account/deposit_address/${id}`)
     .then(response => response.data);
 };
 

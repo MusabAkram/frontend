@@ -23,8 +23,8 @@ class App extends Component {
       <Switch>
         <Redirect exact from='/' to='/wallets' />
         <Route exact path="/login" component={LoginPage} />
-        <PrivateRoute path="/wallets" component={WalletPage} isAuthenticated={isAuthenticated} isLoading={isFetching} />
-        <PrivateRoute path="/trade" component={TradePage} isAuthenticated={isAuthenticated} isLoading={isFetching} />
+        <PrivateRoute path="/wallets" component={WalletPage} isAuthenticated={true} isLoading={isFetching} />
+        <PrivateRoute path="/trade" component={TradePage} isAuthenticated={true} isLoading={isFetching} />
       </Switch>
     );
   }

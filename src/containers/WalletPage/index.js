@@ -23,6 +23,7 @@ import WithDraw from './WidthDraw';
 import BuySell from './Buy_Sell';
 import CoinList from './List';
 import History from './History';
+import DepositeWithQr from './DepositeWithQr';
 class WalletPage extends Component {
   constructor(props){
     super(props);
@@ -30,7 +31,7 @@ class WalletPage extends Component {
       CionDetails: {id: "",
       locked: 0,
       name: "",
-      withdraw_fee: ''},
+      withdraw_fee: '',address:""},
       ShowTab:0,
       walletList:{},
       images:
@@ -52,10 +53,18 @@ componentDidMount(){
   this.props.fetchWalletData()
 }
 componentWillReceiveProps(newProps){
-    console.log(newProps.wallets,CoinList,'waleeeeeeeeeeeee')
     if(newProps.wallets){
       this.setState({walletList:newProps.wallets})
     }
+
+}
+callWidtDraw =(typeCall,data)=>{
+
+  this.props.fetchSubmitWithdraw(data)
+}
+selectedCoin=(data)=>{
+  this.setState({CionDetails:data})
+  this.props.setActiveWallet(data.id)
 }
   //FIXME: query the correct history
   // filterHistory = list => list.filter(item => item.currency === this.props.activeWallet);
@@ -93,7 +102,7 @@ componentWillReceiveProps(newProps){
                 </form>
                 <ul className="crypt-big-list crypt-coin-select">
                   {Object.values(walletList).map((data)=>(
-                    <li onClick={()=>this.setState({CionDetails:data})}>
+                    <li onClick={()=>this.selectedCoin(data)}>
                       <a 
                       // href={data.name}
                       >
@@ -139,11 +148,11 @@ componentWillReceiveProps(newProps){
                           <i className="pe-7s-up-arrow"></i> Withdraw
                         </a>
 
-                        <a className={`nav-link ${ShowTab == 2 ? ' active': ''}`} onClick={()=>this.handleTabe(2)}  id="v-pills-zilliqua-btc-history-tab" data-toggle="pill"
+                        {/* <a className={`nav-link ${ShowTab == 2 ? ' active': ''}`} onClick={()=>this.handleTabe(2)}  id="v-pills-zilliqua-btc-history-tab" data-toggle="pill"
                           // href="#v-pills-zilliqua-btc-history" role="tab" aria-controls="v-pills-zilliqua-btc-history"
                           aria-selected="false">
                           <i className="pe-7s-clock"></i> History
-                        </a>
+                        </a> */}
 
                         <a className={`nav-link ${ShowTab == 3 ? ' active': ''}`} onClick={()=>this.handleTabe(3)}  id="v-pills-zilliqua-btc-buysell-tab" data-toggle="pill"
                           // href="#v-pills-zilliqua-btc-buysell" role="tab" aria-controls="v-pills-zilliqua-btc-buysell"
@@ -154,8 +163,9 @@ componentWillReceiveProps(newProps){
                     </div>
                     <div className="col-md-9">
                       <div className="tab-content" id="v-pills-zilliqua-btc-tabContent">
-                        {ShowTab == 0 &&  <Deposite />}
-                        {ShowTab == 1 &&  <WithDraw/>}
+                      {ShowTab == 0 &&  <DepositeWithQr name={CionDetails.name} Code={CionDetails.address} />}
+                      {/* {ShowTab == 0 &&  <Deposite />} */}
+                        {ShowTab == 1 &&  <WithDraw  WithDrawNow={this.callWidtDraw} CionDetails={CionDetails}/>}
                         {ShowTab == 2 &&    <History/>}
                         {ShowTab == 3 &&    <BuySell/>}
                       </div>
@@ -191,7 +201,7 @@ function mapDispatchToProps(dispatch) {
     setActiveWallet: id => dispatch(setActiveWallet(id)),
     fetchWalletAddress: id => dispatch(fetchWalletAddress(id)),
     fetchHistory: () => dispatch(fetchHistory()),
-    fetchSubmitWithdraw: () => dispatch(fetchSubmitWithdraw()),
+    fetchSubmitWithdraw: (data) => dispatch(fetchSubmitWithdraw(data)),
     handleChangeWithdraw: (field, value) => dispatch(handleChangeWithdraw(field, value))
   };
 }
