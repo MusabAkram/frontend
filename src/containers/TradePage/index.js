@@ -15,101 +15,6 @@ import { host } from "../../config";
 
 
 class TradePage extends Component {
-  constructor(props){
-    super(props);
-    this.state = {  
-        currencies:[],
-        balance:[],
-        marketData:[],
-        tickerData:null,
-        orderBookData:null,
-        currentMarket:'',
-        marketTradeData:null
-    }
-
-  }
-  // componentDidMount(){
-  //   this.props.fetchTradeData()
-  // }
-  // UNSAFE_componentWillReceiveProps(newProps){
-  //     console.log(newProps,'waleeeeeeeeeeeee');
-  //     console.log(this.state,"state");
-  //     // if(newProps.wallets){
-  //     //   this.setState({walletList:newProps.wallets})
-  //     // }
-  //     // console.log(this.state);
-  // }
-  // UNSAFE_componentWillUpdate(newProps, newStates){
-  //   console.log(newProps,"newProps");
-  //   console.log(newStates,"newStates");
-
-
-  // }
-
-  async componentDidMount(){
-    let stateData = {
-      currencies:[],
-      marketData:[],
-      tickerData:[],
-      orderBookData:null,
-      currentMarket:'',
-      marketTradeData:null
-    }
-    const response = await fetch(host + "/api/v2/peatio/public/currencies");
-    const data = await response.json();
-    stateData.currencies = data;
-    this.setState({currencies:data});
-
-    const marketResponse = await fetch(host + "/api/v2/peatio/public/markets");
-    const marketData = await marketResponse.json();
-    stateData.marketData = marketData;
-    // stateData.currentMarket = marketData[0].id;
-    this.setState({marketData:marketData,currentMarket:marketData[0].id});
-    
-    const tickerResponse = await fetch(host + "/api/v2/peatio/public/markets/tickers");
-    const tickerDataTemp = await tickerResponse.json();
-    let tickerData = [];
-
-    for(var i = 0; i < marketData.length; i++){
-      let key = marketData[i].id;
-      let name = marketData[i].name;
-      let ticker = tickerDataTemp[key].ticker;
-      ticker.name = name;
-      let symbol = ticker.price_change_percent.substr(0,1);
-      if(symbol == "+"){
-        ticker.class = "crypt-up";
-      }else if(symbol == "-"){
-        ticker.class = "crypt-down";
-      }
-      else{
-        ticker.class = "";
-      }
-      if(ticker.name.indexOf("USD") > -1 ){
-      }
-      tickerData.push(ticker);     
-    }
-    this.setState({tickerData:tickerData});
-    // stateData.tickerData = tickerData;
-
-    const orderBookResponse = await fetch(host+"/api/v2/peatio/public/markets/"+ this.state.currentMarket + "/order-book");
-    const orderBookData = await orderBookResponse.json();
-    // stateData.orderBookData = orderBookData;
-    this.setState({orderBookData:orderBookData})
-
-    const marketTradeResponse = await fetch(host+"/api/v2/peatio/public/markets/"+ this.state.currentMarket +"/trades");
-    const marketTradeData = await marketTradeResponse.data;
-    // stateData.marketTradeData = marketTradeData;
-    this.setState({marketData:marketData});
-
-    // const marketTradeResponse = await fetch();
-    // const marketTradeData = await marketTradeResponse.data;
-
-    
-    console.log(this.state);
-    // console.log(this.state.orderBookData.asks);
-  }
-
-
   render() {
     return (
       <Layout>
@@ -120,9 +25,9 @@ class TradePage extends Component {
                 <div>
                   {/* <!-- Nav tabs --> */}
                   <ul className="nav nav-tabs" id="crypt-tab">
-                    <li><a href="#usd" className="active" data-toggle="tab">usd</a></li>
-                    <li ><a href="#btc" data-toggle="tab">btc</a></li>
-                    <li ><a href="#eth" data-toggle="tab">eth</a></li>
+                    <li role="presentation"><a href="#usd" className="active" data-toggle="tab">usd</a></li>
+                    <li role="presentation"><a href="#btc" data-toggle="tab">btc</a></li>
+                    <li role="presentation"><a href="#eth" data-toggle="tab">eth</a></li>
                   </ul>
 
                   {/* <!-- Tab panes --> */}
@@ -138,7 +43,7 @@ class TradePage extends Component {
                         </thead>
                         <tbody className="crypt-table-hover">
                         
-                          {/* {tradeJSON.map(data=>(
+                          {tradeJSON.map(data=>(
                             <tr>
                               <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{data.Coin}</td>
                               <td className={`${data.class2?data.class2:''} align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{data.Price}</span></td>
@@ -147,23 +52,7 @@ class TradePage extends Component {
                                 <b className={data.class2?data.class2:''}>{data.Volum2}</b>
                               </td>
                             </tr>
-                          ))} */}
-                          {
-                            (this.state.tickerData==null?(<tr><td></td><td></td><td></td></tr>):(
-                                this.state.tickerData.map(one=>(
-                                  <tr style={{display:one.name.indexOf("USD")>-1?"":"none"}}>
-                                    <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{one.name}</td>
-                                    <td className= {one.class + ` align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{one.avg_price}</span></td>
-                                    <td>
-                                      <span className="d-block">{one.volume}</span>
-                                      <b className={one.class}>{one.price_change_percent}</b>
-                                    </td>
-                                  </tr>
-                                )
-                              )
-                            )    
-                            )                   
-                          }
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -177,7 +66,7 @@ class TradePage extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {/* {tradeJSON.map(data=>(
+                          {tradeJSON.map(data=>(
                             <tr>
                               <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{data.Coin}</td>
                               <td className={`${data.class2?data.class2:''} align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{data.Price}</span></td>
@@ -186,23 +75,7 @@ class TradePage extends Component {
                                 <b className={data.class2?data.class2:''}>{data.Volum2}</b>
                               </td>
                             </tr>
-                          ))} */}
-                           {
-                            (this.state.tickerData==null?(<tr><td></td><td></td><td></td></tr>):(
-                                this.state.tickerData.map(one=>(
-                                  <tr style={{display:one.name.indexOf("BTC")>-1?"":"none"}}>
-                                    <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{one.name}</td>
-                                    <td className= {one.class + ` align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{one.avg_price}</span></td>
-                                    <td>
-                                      <span className="d-block">{one.volume}</span>
-                                      <b className={one.class}>{one.price_change_percent}</b>
-                                    </td>
-                                  </tr>
-                                )
-                              )
-                            )    
-                            )                   
-                          }
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -216,7 +89,7 @@ class TradePage extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {/* {tradeJSON.map(data=>(
+                          {tradeJSON.map(data=>(
                             <tr>
                               <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{data.Coin}</td>
                               <td className={`${data.class2?data.class2:''} align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{data.Price}</span></td>
@@ -225,23 +98,7 @@ class TradePage extends Component {
                                 <b className={data.class2?data.class2:''}>{data.Volum2}</b>
                               </td>
                             </tr>
-                          ))} */}
-                           {
-                            (this.state.tickerData==null?(<tr><td></td><td></td><td></td></tr>):(
-                                  this.state.tickerData.map(one=>(
-                                    <tr style={{display:one.name.indexOf("ETH")>-1?"":"none"}}>
-                                      <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{one.name}</td>
-                                      <td className= {one.class + ` align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{one.avg_price}</span></td>
-                                      <td>
-                                        <span className="d-block">{one.volume}</span>
-                                        <b className={one.class}>{one.price_change_percent}</b>
-                                      </td>
-                                    </tr>
-                                  )
-                                )
-                              )    
-                            )                   
-                          }
+                          ))}
                         </tbody>
                       </table>
                     </div>

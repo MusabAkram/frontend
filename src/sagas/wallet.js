@@ -8,8 +8,8 @@ import { fetchHistory } from '../actions/history';
 // Saga sets available wallets
 function* fetchWallet() {
   try {
-    const [balances, currencies] = yield call(getWalletData);
-
+    const [balances, currencies,markets] = yield call(getWalletData);
+    const coinList = markets
     const walletData = balances.reduce((prev, {currency: id, balance, locked}) => {
       const currency = currencies.find(item => id === item.id);
       if (!currency) {
@@ -23,6 +23,7 @@ function* fetchWallet() {
           balance: +balance,
           locked: +locked,
           address: null,
+          coinList:coinList
         }
       };
     }, {});
@@ -42,7 +43,6 @@ export function* fetchWalletSaga() {
 function* setActiveWallet({ payload: { id } }) {
   yield put(push(`/wallets/deposit?currency=${id}`));
   const wallets = yield select(state => state.wallet.list);
-
   if (!wallets[id].address) {
     yield put(actions.fetchWalletAddress(id));
   }
@@ -60,6 +60,7 @@ function* fetchWalletAddress({ payload: { id } }) {
 
   try {
     const { address } = yield call(getWalletAddress, id);
+    // const address ="https://localbitcoins.com/buy-bitcoins-online/pk/pakistan/national-bank-transfer/"
     wallets[id].address = address;
 
     yield put(actions.successWalletAddress(wallets));

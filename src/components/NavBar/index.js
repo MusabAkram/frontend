@@ -3,18 +3,22 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-
+import IconButton from '@material-ui/core/IconButton';
 // import styles from './styles';
 // import { getMatch } from '../../utils';
 import actions from '../../actions';
-
+import MenuIcon from '@material-ui/icons/Menu';
 import logo from '../../assets/logo.png';
 
 class NavBar extends Component {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    marketTable:false
   };
-
+  componentDidMount(){
+    console.log('ssssssss')
+    // this.props.actions.fetchMarket()
+  }
   handleMenuClick = event => this.setState({ menuAnchorEl: event.currentTarget });
 
   handleClick = event => this.setState({ anchorEl: event.currentTarget });
@@ -37,23 +41,33 @@ class NavBar extends Component {
       });
     }
   }
-
+  ShowTable=()=>{
+    this.setState({marketTable:!this.state.marketTable})
+    setTimeout(() => {
+      this.setState({marketTable:false})
+    }, 4000);
+  }
   render() {
-    // const { classes, location, wallets, activeWallet } = this.props;
-    // const { anchorEl, menuAnchorEl } = this.state;
+    const { classes, location, wallets, activeWallet } = this.props;
+    const { anchorEl, menuAnchorEl } = this.state;
 
-    // const menuButton = (
-    //   <IconButton
-    //     color="inherit"
-    //     aria-label="Menu"
-    //     aria-owns={menuAnchorEl ? 'nav-menu' : undefined}
-    //     aria-haspopup="true"
-    //     onClick={this.handleMenuClick}
-    //   >
-    //     <MenuIcon />
-    //   </IconButton>
-    // );
-
+    const menuButton = (
+      <IconButton
+        color="inherit"
+        aria-label="Menu"
+        aria-owns={menuAnchorEl ? 'nav-menu' : undefined}
+        aria-haspopup="true"
+        onClick={this.handleMenuClick}
+      >
+        <MenuIcon />
+      </IconButton>
+    );
+    const { isFetching, user } = this.props;
+    let isAuthenticated = true;
+    // if (user) {
+    //   isAuthenticated = user.email && user.state === 'active';
+    // }
+    console.log(this.props)
     return (
       <div className="crypt-dark">
         <header>
@@ -67,15 +81,133 @@ class NavBar extends Component {
                         <img src={logo} alt="logo" />
                       </div>
                     </div>
-                    <div className="col-xs-2">
-                      <div className="crypt-mega-dropdown-menu">
-                        <a href="#/" className="crypt-mega-dropdown-toggle">BTC/ETH <i className="pe-7s-angle-down-circle"></i></a>
-                        <div className="crypt-mega-dropdown-menu-block">
-                          <div className="crypt-market-status">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <div class="col-xs-2">
+								<div class="crypt-mega-dropdown-menu">
+								  	<a href="#" class="crypt-mega-dropdown-toggle" onClick={()=>this.ShowTable()}>BTC/ETH <i class="pe-7s-angle-down-circle"></i></a>
+								  	<div class={this.state.marketTable?"crypt-mega-dropdown-menu-block shown":"crypt-mega-dropdown-menu-block"}>
+								  		<div class="crypt-market-status">
+											<div>
+											  <div class="tab-content">
+											    <div role="tabpanel" class="tab-pane active">
+											    	<table class="table table-striped">
+													  <thead>
+													    <tr>
+													      <th scope="col">Coin</th>
+													      <th scope="col">Price</th>
+													      <th scope="col">Volume</th>
+													      <th scope="col">Change</th>
+													    </tr>
+													  </thead>
+													  <tbody>
+													    <tr>
+													      <th scope="row">BTC</th>
+													      <td class="crypt-down">0.000056</td>
+													      <td>5.3424984</td>
+													      <td class="crypt-down"><b>-5.4%</b></td>
+													    </tr>
+													  </tbody>
+													</table>
+											    </div>
+											    <div role="tabpanel" class="tab-pane">
+											    	<table class="table table-striped">
+													  <thead>
+													    <tr>
+													      <th scope="col">Coin</th>
+													      <th scope="col">Price</th>
+													      <th scope="col">Volume</th>
+													      <th scope="col">Change</th>
+													    </tr>
+													  </thead>
+													  <tbody>
+													    <tr>
+													      <th scope="row">BTC</th>
+													      <td class="crypt-down">0.000056</td>
+													      <td>5.3424984</td>
+													      <td class="crypt-down"><b>-5.4%</b></td>
+													    </tr>
+													    <tr>
+													      <th scope="row">LTC</th>
+													      <td>0.0000564</td>
+													      <td>6.6768876</td>
+													      <td>-6.7%</td>
+													    </tr>
+													    <tr>
+													      <th scope="row">DOGE</th>
+													      <td class="crypt-up">0.0000234</td>
+													      <td>4.3456600</td>
+													      <td class="crypt-up">-9.6%</td>
+													    </tr>
+													    <tr>
+													      <th scope="row">XMR</th>
+													      <td>0.0000567</td>
+													      <td>4.3456600</td>
+													      <td>-5.6%</td>
+													    </tr>
+													    <tr>
+													      <th scope="row">DOGE</th>
+													      <td class="crypt-up">0.0000234</td>
+													      <td>4.3456600</td>
+													      <td class="crypt-up">-9.6%</td>
+													    </tr>
+													    <tr>
+													      <th scope="row">XMR</th>
+													      <td>0.0000567</td>
+													      <td>4.3456600</td>
+													      <td>-5.6%</td>
+													    </tr>
+													  </tbody>
+													</table>
+											    </div>
+											    <div role="tabpanel" class="tab-pane">
+											    	<table class="table table-striped">
+													  <thead>
+													    <tr>
+													      <th scope="col">Coin</th>
+													      <th scope="col">Price</th>
+													      <th scope="col">Volume</th>
+													      <th scope="col">Change</th>
+													    </tr>
+													  </thead>
+													  <tbody>
+													    <tr>
+													      <th scope="row">BTC</th>
+													      <td class="crypt-down">0.000056</td>
+													      <td>5.3424984</td>
+													      <td class="crypt-down"><b>-5.4%</b></td>
+													    </tr>
+													    <tr>
+													      <th scope="row">DOGE</th>
+													      <td class="crypt-up">0.0000234</td>
+													      <td>4.3456600</td>
+													      <td class="crypt-up">-9.6%</td>
+													    </tr>
+													    <tr>
+													      <th scope="row">XMR</th>
+													      <td>0.0000567</td>
+													      <td>4.3456600</td>
+													      <td>-5.6%</td>
+													    </tr>
+													    <tr>
+													      <th scope="row">DOGE</th>
+													      <td class="crypt-up">0.0000234</td>
+													      <td>4.3456600</td>
+													      <td class="crypt-up">-9.6%</td>
+													    </tr>
+													    <tr>
+													      <th scope="row">XMR</th>
+													      <td>0.0000567</td>
+													      <td>4.3456600</td>
+													      <td>-5.6%</td>
+													    </tr>
+													  </tbody>
+													</table>
+											    </div>
+											  </div>
+											</div>
+										</div>
+								  	</div>
+								</div>
+							</div>
                     <div className="col-xs-8  d-none d-lg-block">
                       <div className='row showStatus'>
                         <div className="crypt-heading-menu fright">
@@ -105,8 +237,8 @@ class NavBar extends Component {
                     <li><a href="marketcap.html">Support</a></li>
                     <li><a href="trading.html">Tools</a></li>
                     {/* <li><a href="withdrawl.html">Account</a></li> */}
-                    <li className="crypt-box-menu menu-red"><a href="register.html">register</a></li>
-                    <li className="crypt-box-menu menu-green"><a href="login.html">login</a></li>
+                    <li className="crypt-box-menu menu-red"><a href='#'>{isAuthenticated?'Settings':'register'}</a></li>
+                    <li className="crypt-box-menu menu-green"><a href='#'  onClick={()=>this.logoutUser()} >{isAuthenticated?"Log out":'login'}</a></li>
                   </ul>
                 </div><i className="menu-toggle pe-7s-menu d-xs-block d-sm-block d-md-none d-sm-none"></i></div>
             </div>
@@ -135,6 +267,9 @@ export default compose(
   // withStyles(styles),
   connect(state => ({
     wallets: state.wallet.list,
-    activeWallet: state.wallet.activeWallet
+    activeWallet: state.wallet.activeWallet,
+    user: state.user.data,
+    isFetching: state.user.isFetching,
+    state:state
   }), actions),
 )(NavBar);

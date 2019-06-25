@@ -6,6 +6,7 @@ import userReducer from './userReducer';
 import historyReducer from './historyReducer';
 import withdrawReducer from './withdrawReducer';
 import authReducer from './authReducer';
+import marketReducer from './marketReducer';
 import tradeReducer from './tradeReducer';
 
 
@@ -15,6 +16,7 @@ export default combineReducers({
   history: historyReducer,
   withdraw: withdrawReducer,
   auth: authReducer,
+   market:marketReducer,
   trade:tradeReducer,
   router: connectRouter(history),
 });
