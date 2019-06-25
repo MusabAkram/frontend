@@ -1,11 +1,18 @@
 import TradingViewWidget, { Themes,BarStyles } from 'react-tradingview-widget';
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import compose from 'recompose/compose';
+import { connect } from 'react-redux';
 import Layout from '../Layout';
 import imgStar from '../../assets/images/star.svg';
 import imgEmpty from '../../assets/images/empty.png';
 import Transition from './Transition';
 import tradeJSON from './trade';
 import Buy_Sells from './Sells';
+import { fetchTradeData } from '../../actions/trade';
+import { fetchHistory } from '../../actions/history';
+import { host } from "../../config";
+
 
 class TradePage extends Component {
   render() {
@@ -149,8 +156,8 @@ class TradePage extends Component {
                 <div>
                   {/* <!-- Nav tabs --> */}
                   <ul className="nav nav-tabs">
-                    <li role="presentation"><a href="#history" className="active" data-toggle="tab">history</a></li>
-                    <li role="presentation"><a href="#market-trading" data-toggle="tab">market trading</a></li>
+                    <li role="presentation"><a href="#history" className="active" data-toggle="tab">orderbook</a></li>
+                    <li role="presentation"><a href="#market-trading" data-toggle="tab">Trades</a></li>
                   </ul>
 
                   {/* <!-- Tab panes --> */}
@@ -165,13 +172,57 @@ class TradePage extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {Transition.map(data=>(
+                          {/* {Transition.map(data=>(
                             <tr>
                               <td>{data.Time}</td>
                               <td className={data.class2?data.class2:''}>{data.Price}</td>
                               <td>{data.Volume}</td>
                             </tr>
-                          ))}
+                          ))} */}
+
+                          <tr>
+                            <td colSpan="3" style={{textAlign:"center",fontWeight:"700"}}>Asks</td>
+                          </tr>
+                            {
+                              (this.state.orderBookData==null?(<tr><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}>No Data!</td></tr>):(
+                               
+                                (this.state.orderBookData.asks.length == 0?(<tr style={{backgroundColor:"rgb(239, 146, 180)"}}><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}>No Ask Data!</td></tr>):(
+                                  this.state.orderBookData.asks.map( data => (
+                                    <tr style={{backgroundColor:"rgb(239, 146, 180)"}}>
+                                      <td className="orderbook_ask">{data.time}</td>
+                                      <td className="orderbook_ask">{data.price}</td>
+                                      <td className="orderbook_ask">{data.volume}</td>
+                                    </tr>
+                                  )                                  
+                                  )
+                                ))  
+                                                      
+                                )
+                              )
+                            }
+                            
+                            <tr>
+                              <td colSpan="3" style={{textAlign:"center" ,fontWeight:"700"}}> Bids</td>
+                            </tr>
+                             {
+                              (this.state.orderBookData==null?(<tr><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}>No Data!</td></tr>):(
+                                (this.state.orderBookData.bids.length == 0?(<tr style={{backgroundColor:"#d2d2b1"}}><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}>No Bid Data!</td></tr>):(
+                                  this.state.orderBookData.bids.map( data => (
+                                    <tr style={{backgroundColor:"yellow"}}>
+                                      <td className="orderbook_bid">{data.time}</td>
+                                      <td className="orderbook_bid">{data.price}</td>
+                                      <td className="orderbook_bid">{data.volume}</td>
+                                    </tr>
+                                  )                                  
+                                  )         
+                                ))
+                                             
+                                )
+                              )
+                            }
+
+
+
                         </tbody>
                       </table>
                     </div>
@@ -185,13 +236,27 @@ class TradePage extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {Transition.map(data=>(
+                          {/* {Transition.map(data=>(
                             <tr>
                               <td>{data.Time}</td>
                               <td className={data.class2?data.class2:''}>{data.Price}</td>
                               <td>{data.Volume}</td>
                             </tr>
-                          ))}
+                          ))} */}
+
+{
+                            (this.state.marketTradeData==null?(<tr><td colSpan="3" style={{textAlign:"center",color:"red"}}>No Trading Data!</td></tr>):(
+                                  this.state.marketTradeData.map(one=>(
+                                    <tr>
+                                      <td>{one.time}</td>
+                                      <td>{one.amount}</td>
+                                      <td>{one.volume}</td>
+                                    </tr>
+                                  )
+                                )
+                              )    
+                            )                   
+                          }
                         </tbody>
                       </table>
                     </div>
@@ -434,4 +499,25 @@ class TradePage extends Component {
   }
 }
 
-export default TradePage;
+function mapStateToProps(state) {
+  return {
+    currencies:state.currencies,
+    balance:state.balance,
+    marketData:state.marketData,
+    tickerData:state.tickerData,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchTradeData: () => dispatch(fetchTradeData()),
+    fetchHistory : ()  => dispatch(fetchHistory())
+    
+  };
+}
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter
+)(TradePage);
+
