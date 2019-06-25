@@ -12,6 +12,7 @@ import Buy_Sells from './Sells';
 import { fetchTradeData } from '../../actions/trade';
 import { fetchHistory } from '../../actions/history';
 import { host } from "../../config";
+import $ from "jquery";
 
 
 class TradePage extends Component {
@@ -26,6 +27,7 @@ class TradePage extends Component {
         currentMarket:'',
         marketTradeData:null
     }
+    this.handleClickTickerItem = this.handleClickTickerItem.bind(this);
 
   }
   // componentDidMount(){
@@ -109,6 +111,9 @@ class TradePage extends Component {
     // console.log(this.state.orderBookData.asks);
   }
 
+  handleClickTickerItem(tickerID){
+    this.setState({currentMarket:tickerID});
+  }
 
   render() {
     return (
@@ -151,7 +156,7 @@ class TradePage extends Component {
                           {
                             (this.state.tickerData==null?(<tr><td></td><td></td><td></td></tr>):(
                                 this.state.tickerData.map(one=>(
-                                  <tr style={{display:one.name.indexOf("USD")>-1?"":"none"}}>
+                                  <tr style={{display:one.name.indexOf("USD")>-1?"":"none"}} onClick={this.handleClickTickerItem(one.id)}>
                                     <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{one.name}</td>
                                     <td className= {one.class + ` align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{one.avg_price}</span></td>
                                     <td>
@@ -190,7 +195,7 @@ class TradePage extends Component {
                            {
                             (this.state.tickerData==null?(<tr><td></td><td></td><td></td></tr>):(
                                 this.state.tickerData.map(one=>(
-                                  <tr style={{display:one.name.indexOf("BTC")>-1?"":"none"}}>
+                                  <tr style={{display:one.name.indexOf("BTC")>-1?"":"none"}} onClick={this.handleClickTickerItem(one.id)}>
                                     <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{one.name}</td>
                                     <td className= {one.class + ` align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{one.avg_price}</span></td>
                                     <td>
@@ -229,7 +234,7 @@ class TradePage extends Component {
                            {
                             (this.state.tickerData==null?(<tr><td></td><td></td><td></td></tr>):(
                                   this.state.tickerData.map(one=>(
-                                    <tr style={{display:one.name.indexOf("ETH")>-1?"":"none"}}>
+                                    <tr style={{display:one.name.indexOf("ETH")>-1?"":"none"}} onClick={this.handleClickTickerItem(one.id)}>
                                       <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{one.name}</td>
                                       <td className= {one.class + ` align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{one.avg_price}</span></td>
                                       <td>
@@ -327,9 +332,9 @@ class TradePage extends Component {
                             <td colSpan="3" style={{textAlign:"center",fontWeight:"700"}}>Asks</td>
                           </tr>
                             {
-                              (this.state.orderBookData==null?(<tr><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}>No Data!</td></tr>):(
+                              (this.state.orderBookData==null?(<tr><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}></td></tr>):(
                                
-                                (this.state.orderBookData.asks.length == 0?(<tr style={{backgroundColor:"rgb(239, 146, 180)"}}><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}>No Ask Data!</td></tr>):(
+                                (this.state.orderBookData.asks.length == 0?(<tr style={{backgroundColor:"rgb(239, 146, 180)"}}><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}></td></tr>):(
                                   this.state.orderBookData.asks.map( data => (
                                     <tr style={{backgroundColor:"rgb(239, 146, 180)"}}>
                                       <td className="orderbook_ask">{data.time}</td>
@@ -348,8 +353,8 @@ class TradePage extends Component {
                               <td colSpan="3" style={{textAlign:"center" ,fontWeight:"700"}}> Bids</td>
                             </tr>
                              {
-                              (this.state.orderBookData==null?(<tr><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}>No Data!</td></tr>):(
-                                (this.state.orderBookData.bids.length == 0?(<tr style={{backgroundColor:"#d2d2b1"}}><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}>No Bid Data!</td></tr>):(
+                              (this.state.orderBookData==null?(<tr><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}></td></tr>):(
+                                (this.state.orderBookData.bids.length == 0?(<tr style={{backgroundColor:"#d2d2b1"}}><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}></td></tr>):(
                                   this.state.orderBookData.bids.map( data => (
                                     <tr style={{backgroundColor:"yellow"}}>
                                       <td className="orderbook_bid">{data.time}</td>
@@ -642,6 +647,15 @@ class TradePage extends Component {
   }
 }
 
+
+$(document).ready(function(){
+  $(".crypt-market-status").find("ul li").each(function(){
+    $(this).on("click",function(){
+      $(this).parent().find(".active").removeClass("active");
+      $(this).find("a").addClass("active");
+    })
+  })  
+});
 function mapStateToProps(state) {
   return {
     currencies:state.currencies,
