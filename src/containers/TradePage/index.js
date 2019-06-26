@@ -207,17 +207,17 @@ class TradePage extends Component {
         <div className="container-fluid">
           <div className="row sm-gutters">
             <div className="col-md-6 col-lg-6 col-xl-3 col-xxl-2">
-              <div className="crypt-market-status mt-4" id="tickerTable">
+              <div className="crypt-market-status mt-4">
                 <div>
                   {/* <!-- Nav tabs --> */}
                   <ul className="nav nav-tabs" id="crypt-tab">
-                    <li><a href="#usd" className="active" data-toggle="tab">usd</a></li>
-                    <li ><a href="#btc" data-toggle="tab">btc</a></li>
-                    <li ><a href="#eth" data-toggle="tab">eth</a></li>
+                    <li role="presentation"><a href="#usd" className="active" data-toggle="tab">usd</a></li>
+                    <li role="presentation"><a href="#btc" data-toggle="tab">btc</a></li>
+                    <li role="presentation"><a href="#eth" data-toggle="tab">eth</a></li>
                   </ul>
 
                   {/* <!-- Tab panes --> */}
-                  <div className="tab-content crypt-tab-content" >
+                  <div className="tab-content crypt-tab-content">
                     <div role="tabpanel" className="tab-pane active" id="usd">
                       <table className="table table-striped">
                         <thead>
@@ -229,7 +229,7 @@ class TradePage extends Component {
                         </thead>
                         <tbody className="crypt-table-hover">
                         
-                          {/* {tradeJSON.map(data=>(
+                          {tradeJSON.map(data=>(
                             <tr>
                               <td className="align-middle"><img className="crypt-star pr-1" alt="star" src={imgStar} width="15" />{data.Coin}</td>
                               <td className={`${data.class2?data.class2:''} align-middle`}><span className="pr-2" data-toggle="tooltip" data-placement="right" title="$ 0.05">{data.Price}</span></td>
@@ -347,29 +347,21 @@ class TradePage extends Component {
                     <div className="row">
                       <div className="col-sm-6 col-md-6 col-lg-6">
                         <p>Last Price BTC</p>
-                        {/* <p>0.0234230 $0.04</p> */}
-                        <p>{this.state.currentTicker!=null?this.state.currentTicker.ticker.last:''}</p>
-
+                        <p>0.0234230 $0.04</p>
                       </div>
                       <div className="col-sm-6 col-md-6 col-lg-6">
                         <p>Change BTC</p>
-                        {/* <p className="crypt-down">-0.0234230 -3.35%</p> */}
-                        <p className="crypt-down">{this.state.currentTicker!=null?this.state.currentTicker.ticker.price_change_percent:''}</p>
-
+                        <p className="crypt-down">-0.0234230 -3.35%</p>
                       </div>
                     </div>
                   </div>
                   <div className="col-3 col-sm-2 col-md-3 col-lg-2">
                     <p>High BTC</p>
-                    {/* <p className="crypt-up">0.435453</p> */}
-                    <p className="crypt-up">{this.state.currentTicker!=null?this.state.currentTicker.ticker.high:''}</p>
-
+                    <p className="crypt-up">0.435453</p>
                   </div>
                   <div className="col-3 col-sm-2 col-md-3 col-lg-2">
                     <p>Low BTC</p>
-                    {/* <p className="crypt-down">0.09945</p> */}
-                    <p className="crypt-down">{this.state.currentTicker!=null?this.state.currentTicker.ticker.low:''}</p>
-
+                    <p className="crypt-down">0.09945</p>
                   </div>
                   <div className="col-3 col-sm-2 col-md-3 col-lg-2">
                     <p>Volume 24Hr</p>
@@ -421,10 +413,14 @@ class TradePage extends Component {
                               <td>{data.Volume}</td>
                             </tr>
                           ))} */}
+
+                          <tr>
+                            <td colSpan="3" style={{textAlign:"center",fontWeight:"700"}}>Asks</td>
+                          </tr>
                             {
-                              (this.state.orderBookData==null?(<tr><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}></td></tr>):(
+                              (this.state.orderBookData==null?(<tr><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}>No Data!</td></tr>):(
                                
-                                (this.state.orderBookData.asks.length == 0?(<tr style={{color:"rgb(239, 146, 180)"}}><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}></td></tr>):(
+                                (this.state.orderBookData.asks.length == 0?(<tr style={{backgroundColor:"rgb(239, 146, 180)"}}><td className="orderbook_ask" colSpan="3" style={{textAlign:"center"}}>No Ask Data!</td></tr>):(
                                   this.state.orderBookData.asks.map( data => (
                                     <tr style={{backgroundColor:"rgb(239, 146, 180)"}}>
                                       <td className="orderbook_ask">{data.time}</td>
@@ -440,11 +436,11 @@ class TradePage extends Component {
                             }
                             
                             <tr>
-                              <td colSpan="3" style={{textAlign:"center" ,fontWeight:"700"}}> {this.state.currentTicker==null?'':this.state.currentTicker.ticker.avg_price}</td>
+                              <td colSpan="3" style={{textAlign:"center" ,fontWeight:"700"}}> Bids</td>
                             </tr>
                              {
-                              (this.state.orderBookData==null?(<tr><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}></td></tr>):(
-                                (this.state.orderBookData.bids.length == 0?(<tr style={{color:"#d2d2b1"}}><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}></td></tr>):(
+                              (this.state.orderBookData==null?(<tr><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}>No Data!</td></tr>):(
+                                (this.state.orderBookData.bids.length == 0?(<tr style={{backgroundColor:"#d2d2b1"}}><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}>No Bid Data!</td></tr>):(
                                   this.state.orderBookData.bids.map( data => (
                                     <tr style={{backgroundColor:"yellow"}}>
                                       <td className="orderbook_bid">{data.time}</td>
@@ -483,7 +479,7 @@ class TradePage extends Component {
                           ))} */}
 
 {
-                            (this.state.marketTradeData==null?(<tr><td colSpan="3" style={{textAlign:"center",color:"red"}}></td></tr>):(
+                            (this.state.marketTradeData==null?(<tr><td colSpan="3" style={{textAlign:"center",color:"red"}}>No Trading Data!</td></tr>):(
                                   this.state.marketTradeData.map(one=>(
                                     <tr>
                                       <td>{one.time}</td>

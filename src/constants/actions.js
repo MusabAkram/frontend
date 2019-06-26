@@ -32,4 +32,10 @@ export const SUCCESS_TRADE_DATA = 'trade/SUCCESS_TRADE_DATA';
 export const FAIL_TRADE_DATA = 'trade/FAIL_TRADE_DATA';
 export const FETCH_TRADE_DATA = 'trade/FETCH_TRADE_DATA';
 
+export const FETCH_SIGNUP = 'FETCH_SIGNUP'
+export const Fail_SIGNUP = 'Fail_SIGNUP'
+
+export const FETCH_MARKET = 'FETCH_MARKET'
+export const SUCCESS_MARKET = 'SUCCESS_MARKET'
+export const FAIL_MARKET = 'FAIL_MARKET'
 

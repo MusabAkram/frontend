@@ -14,6 +14,8 @@ import xrp from '../../assets/images/coins/xrp.png';
 import monero from '../../assets/images/coins/monero.png';
 import zil from '../../assets/images/coins/zil.png';
 import dash from '../../assets/images/coins/dash.png';
+import usd from '../../assets/images/coins/usd.png';
+import trst from '../../assets/images/coins/trst.png';
 
 import imgVip from '../../assets/images/vip.svg';
 import Deposite from './Deposite';
@@ -21,28 +23,54 @@ import WithDraw from './WidthDraw';
 import BuySell from './Buy_Sell';
 import CoinList from './List';
 import History from './History';
+import DepositeWithQr from './DepositeWithQr';
 class WalletPage extends Component {
   constructor(props){
     super(props);
     this.state={
-      CionDetails:{path: '#bitcoin',
-    
-        code:'btc',
-        price:'$3, 483.59 USD(0.28 %)',
-        Locked:' $ 0.00',
-        value3:' $23454.00',},
-      ShowTab:0
+      CionDetails: {id: "",
+      locked: 0,
+      name: "",
+      withdraw_fee: '',address:""},
+      ShowTab:0,
+      walletList:{},
+      images:
+      {btc:btc,
+      eth:eth,
+      ltc:ltc,
+      xrp:xrp,
+      monero:monero,
+      zil:zil,
+      dash:dash,
+    usd:usd,trst:trst}
     };
   }
   handleTabe=(tab)=>{
     this.setState({ShowTab:tab});
   }
 
+componentDidMount(){
+  this.props.fetchWalletData()
+}
+componentWillReceiveProps(newProps){
+    if(newProps.wallets){
+      this.setState({walletList:newProps.wallets})
+    }
+
+}
+callWidtDraw =(typeCall,data)=>{
+
+  this.props.fetchSubmitWithdraw(data)
+}
+selectedCoin=(data)=>{
+  this.setState({CionDetails:data})
+  this.props.setActiveWallet(data.id)
+}
   //FIXME: query the correct history
   // filterHistory = list => list.filter(item => item.currency === this.props.activeWallet);
 
   render() {
-    const {ShowTab,CionDetails}=this.state;
+    const {ShowTab,CionDetails,walletList,images}=this.state;
     return (
       <Layout>
         {/* sidebar */}
@@ -73,13 +101,13 @@ class WalletPage extends Component {
                   </button>
                 </form>
                 <ul className="crypt-big-list crypt-coin-select">
-                  {CoinList.map((data)=>(
-                    <li onClick={()=>this.setState({CionDetails:data})}>
+                  {Object.values(walletList).map((data)=>(
+                    <li onClick={()=>this.selectedCoin(data)}>
                       <a 
-                      // href={data.path}
+                      // href={data.name}
                       >
-                        <img src={data.img} width="25" className="crypt-market-cap-logo pr-2" alt="coin" /> {data.name}
-                        <p className="fright"><b>{data.value}</b></p>
+                        <img src={images[data.id]} width="25" className="crypt-market-cap-logo pr-2" alt="coin" /> {data.name}
+                        <p className="fright"><b>{data.balance}</b></p>
                       </a>
                     </li>
                   ))}
@@ -91,16 +119,16 @@ class WalletPage extends Component {
                 <div className="crypt-withdraw-heading">
                   <div className="row">
                     <div className="col-sm-4 col-md-3">
-                      <p><b>1 {CionDetails.code.toUpperCase()}</b></p>
-                      <p className="crypt-up"><b>{CionDetails.price}</b></p>
+                      <p><b>1 {CionDetails.id.toUpperCase()}</b></p>
+                      <p className="crypt-up"><b>{CionDetails.balance}</b></p>
                     </div>
                     <div className="col-sm-4 col-md-5">
                       <i className="pe-7s-lock icon-big"></i>
-                      <p><b>Locked:{CionDetails.Locked}</b></p>
+                      <p><b>Locked:{CionDetails.locked}</b></p>
                     </div>
                     <div className="col-sm-4 col-md-4">
                       <p><b>Total:</b></p>
-                      <p className="crypt-up"><b>${CionDetails.value3}</b></p>
+                      <p className="crypt-up"><b>${CionDetails.withdraw_fee}</b></p>
                     </div>
                   </div>
                 </div>
@@ -120,11 +148,11 @@ class WalletPage extends Component {
                           <i className="pe-7s-up-arrow"></i> Withdraw
                         </a>
 
-                        <a className={`nav-link ${ShowTab == 2 ? ' active': ''}`} onClick={()=>this.handleTabe(2)}  id="v-pills-zilliqua-btc-history-tab" data-toggle="pill"
+                        {/* <a className={`nav-link ${ShowTab == 2 ? ' active': ''}`} onClick={()=>this.handleTabe(2)}  id="v-pills-zilliqua-btc-history-tab" data-toggle="pill"
                           // href="#v-pills-zilliqua-btc-history" role="tab" aria-controls="v-pills-zilliqua-btc-history"
                           aria-selected="false">
                           <i className="pe-7s-clock"></i> History
-                        </a>
+                        </a> */}
 
                         <a className={`nav-link ${ShowTab == 3 ? ' active': ''}`} onClick={()=>this.handleTabe(3)}  id="v-pills-zilliqua-btc-buysell-tab" data-toggle="pill"
                           // href="#v-pills-zilliqua-btc-buysell" role="tab" aria-controls="v-pills-zilliqua-btc-buysell"
@@ -135,8 +163,9 @@ class WalletPage extends Component {
                     </div>
                     <div className="col-md-9">
                       <div className="tab-content" id="v-pills-zilliqua-btc-tabContent">
-                        {ShowTab == 0 &&  <Deposite />}
-                        {ShowTab == 1 &&  <WithDraw/>}
+                      {ShowTab == 0 &&  <DepositeWithQr name={CionDetails.name} Code={CionDetails.address} />}
+                      {/* {ShowTab == 0 &&  <Deposite />} */}
+                        {ShowTab == 1 &&  <WithDraw  WithDrawNow={this.callWidtDraw} CionDetails={CionDetails}/>}
                         {ShowTab == 2 &&    <History/>}
                         {ShowTab == 3 &&    <BuySell/>}
                       </div>
@@ -153,6 +182,7 @@ class WalletPage extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state,'ssss')
   return {
     wallets: state.wallet.list,
     activeWallet: state.wallet.activeWallet,
@@ -171,7 +201,7 @@ function mapDispatchToProps(dispatch) {
     setActiveWallet: id => dispatch(setActiveWallet(id)),
     fetchWalletAddress: id => dispatch(fetchWalletAddress(id)),
     fetchHistory: () => dispatch(fetchHistory()),
-    fetchSubmitWithdraw: () => dispatch(fetchSubmitWithdraw()),
+    fetchSubmitWithdraw: (data) => dispatch(fetchSubmitWithdraw(data)),
     handleChangeWithdraw: (field, value) => dispatch(handleChangeWithdraw(field, value))
   };
 }
