@@ -1,6 +1,7 @@
 import TradingViewWidget, { Themes,BarStyles } from 'react-tradingview-widget';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import ReactDOM from 'react-dom';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import Layout from '../Layout';
@@ -13,6 +14,7 @@ import { fetchTradeData } from '../../actions/trade';
 import { fetchHistory } from '../../actions/history';
 import { host } from "../../config";
 import $ from "jquery";
+import { func } from 'prop-types';
 
 
 class TradePage extends Component {
@@ -110,21 +112,19 @@ class TradePage extends Component {
     this.setState({currentTicker:marketTickerData});
   }
 
-  async handleClickTickerItem(ticker){
+  async handleClickTickerItem(ticker,event){
+
     this.setState({currentMarket:ticker});
     const orderBookResponse = await fetch(host+"/api/v2/peatio/public/markets/"+ this.state.currentMarket + "/order-book");
     const orderBookData = await orderBookResponse.json();
     this.setState({orderBookData:orderBookData})
     const marketTradeResponse = await fetch(host+"/api/v2/peatio/public/markets/"+ this.state.currentMarket +"/trades");
-    console.log(host+"/api/v2/peatio/public/markets/"+ this.state.currentMarket +"/trades");
     const marketTradeData = await marketTradeResponse.data;
     this.setState({marketTradeData:marketTradeData});
 
     const marketTickerResponse = await fetch(host+"/api/v2/peatio/public/markets/"+ this.state.currentMarket +"/tickers");
-    console.log(host+"/api/v2/peatio/public/markets/"+ this.state.currentMarket +"/tickers");
     const marketTickerData = await marketTickerResponse.json();
-    this.setState({currentTicker:marketTickerData});
-    console.log(this.state.currentTicker.ticker);
+    this.setState({currentTicker:marketTickerData}); 
   }
   handleChangeBuyAmountInput(event){
     let amount = parseFloat(event.target.value);
@@ -207,7 +207,7 @@ class TradePage extends Component {
         <div className="container-fluid">
           <div className="row sm-gutters">
             <div className="col-md-6 col-lg-6 col-xl-3 col-xxl-2">
-              <div className="crypt-market-status mt-4">
+              <div className="crypt-market-status mt-4" id="tickerTable">
                 <div>
                   {/* <!-- Nav tabs --> */}
                   <ul className="nav nav-tabs" id="crypt-tab">
@@ -217,7 +217,7 @@ class TradePage extends Component {
                   </ul>
 
                   {/* <!-- Tab panes --> */}
-                  <div className="tab-content crypt-tab-content">
+                  <div className="tab-content crypt-tab-content" >
                     <div role="tabpanel" className="tab-pane active" id="usd">
                       <table className="table table-striped">
                         <thead>
@@ -347,21 +347,29 @@ class TradePage extends Component {
                     <div className="row">
                       <div className="col-sm-6 col-md-6 col-lg-6">
                         <p>Last Price BTC</p>
-                        <p>0.0234230 $0.04</p>
+                        {/* <p>0.0234230 $0.04</p> */}
+                        <p>{this.state.currentTicker!=null?this.state.currentTicker.ticker.last:''}</p>
+
                       </div>
                       <div className="col-sm-6 col-md-6 col-lg-6">
                         <p>Change BTC</p>
-                        <p className="crypt-down">-0.0234230 -3.35%</p>
+                        {/* <p className="crypt-down">-0.0234230 -3.35%</p> */}
+                        <p className="crypt-down">{this.state.currentTicker!=null?this.state.currentTicker.ticker.price_change_percent:''}</p>
+
                       </div>
                     </div>
                   </div>
                   <div className="col-3 col-sm-2 col-md-3 col-lg-2">
                     <p>High BTC</p>
-                    <p className="crypt-up">0.435453</p>
+                    {/* <p className="crypt-up">0.435453</p> */}
+                    <p className="crypt-up">{this.state.currentTicker!=null?this.state.currentTicker.ticker.high:''}</p>
+
                   </div>
                   <div className="col-3 col-sm-2 col-md-3 col-lg-2">
                     <p>Low BTC</p>
-                    <p className="crypt-down">0.09945</p>
+                    {/* <p className="crypt-down">0.09945</p> */}
+                    <p className="crypt-down">{this.state.currentTicker!=null?this.state.currentTicker.ticker.low:''}</p>
+
                   </div>
                   <div className="col-3 col-sm-2 col-md-3 col-lg-2">
                     <p>Volume 24Hr</p>
@@ -432,7 +440,7 @@ class TradePage extends Component {
                             }
                             
                             <tr>
-                              <td colSpan="3" style={{textAlign:"center" ,fontWeight:"700"}}> Bids</td>
+                              <td colSpan="3" style={{textAlign:"center" ,fontWeight:"700"}}> {this.state.currentTicker==null?'':this.state.currentTicker.ticker.avg_price}</td>
                             </tr>
                              {
                               (this.state.orderBookData==null?(<tr><td className="orderbook_bid" colSpan="3" style={{textAlign:"center"}}></td></tr>):(
@@ -736,7 +744,13 @@ $(document).ready(function(){
       $(this).parent().find(".active").removeClass("active");
       $(this).find("a").addClass("active");
     })
-  })  
+  })
+  // console.log($("tickerTable").find("tr"));
+  $("#tickerTable").find("tr").each(function(){
+    $(this).on("click",function(){
+        // alert("Sdfsfdsdf"); 
+    });
+  });
 });
 function mapStateToProps(state) {
   return {
