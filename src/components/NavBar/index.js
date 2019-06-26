@@ -151,9 +151,9 @@ class NavBar extends Component {
                 </div>
                 <div className="col-xl-6 col-lg-6 col-md-6 d-none d-md-block d-lg-block">
                   <ul className="crypt-heading-menu fright">
-                    <li><a href="exchange.html">Exchange</a></li>
-                    <li><a href="market-overview.html">wallet</a></li>
-                    <li><a href="marketcap.html">Support</a></li>
+                    <li><a href="/trade">Exchange</a></li>
+                    <li><a href="/wallets">wallet</a></li>
+                    <li><a href="#">Support</a></li>
                     {/* <li><a href="withdrawl.html">Account</a></li> */}
                     <li className="crypt-box-menu menu-red"><a href='#'>{isAuthenticated?'Settings':'register'}</a></li>
                     <li className="crypt-box-menu menu-green"><a href='#'  onClick={()=>isAuthenticated?this.logoutUser():{}} >{isAuthenticated?"Log out":'login'}</a></li>
