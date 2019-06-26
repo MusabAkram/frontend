@@ -4,7 +4,7 @@ import * as walletActions from './wallet';
 import * as historyActions from './history';
 import * as withdrawActions from './withdraw';
 import * as authActions from './auth';
-import * as marketAction from './market'
+
 export default dispatch => ({
   actions: bindActionCreators({
     ...historyActions,
@@ -12,6 +12,5 @@ export default dispatch => ({
     ...walletActions,
     ...withdrawActions,
     ...authActions,
-    ...marketAction
   }, dispatch)
 });
