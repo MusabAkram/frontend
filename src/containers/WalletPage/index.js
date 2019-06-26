@@ -106,7 +106,7 @@ selectedCoin=(data)=>{
                       <a 
                       // href={data.name}
                       >
-                        <img src={images[data.id]} width="25" className="crypt-market-cap-logo pr-2" alt="coin" /> {data.name}
+                        <img src={data.icon_url && data.icon_url?data.icon_url:images[data.id]} width="25" className="crypt-market-cap-logo pr-2" alt="coin" /> {data.name}
                         <p className="fright"><b>{data.balance}</b></p>
                       </a>
                     </li>
