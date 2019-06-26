@@ -27,8 +27,8 @@ class App extends Component {
         <Route exact path="/login" component={LoginPage} />
         <Route  path="/signup" component={RegistryPage} />
         <Route  path="/forgot" component={ForgetPage} />
-        <PrivateRoute path="/wallets" component={WalletPage} isAuthenticated={true} isLoading={isFetching} />
-        <PrivateRoute path="/trade" component={TradePage} isAuthenticated={true} isLoading={isFetching} />
+        <PrivateRoute path="/wallets" component={WalletPage} isAuthenticated={isAuthenticated} isLoading={isFetching} />
+        <PrivateRoute path="/trade" component={TradePage} isAuthenticated={isAuthenticated} isLoading={isFetching} />
       </Switch>
     );
   }
